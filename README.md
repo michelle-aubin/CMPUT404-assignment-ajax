@@ -16,4 +16,5 @@ Resources
 =========
 - https://github.com/abramhindle/CMPUT404-AJAX-Slides/tree/master/ObserverExample
 
+- https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images
 

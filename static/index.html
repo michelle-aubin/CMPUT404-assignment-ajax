@@ -23,6 +23,7 @@
     <script src="json2.js"></script>
   </head> 
   <body bgcolor="black" height="100%" width="100%"> 
+      <button type="button" id="button">Clear</button>
     <canvas id="c" width="100%" height="100%" style="-webkit-tap-highlight-color: transparent;"></canvas> 
     <script>
 var canvas = document.getElementById('c');
@@ -30,6 +31,11 @@ var host = window.location.host;
 var context = canvas.getContext("2d");
 var W = canvas.width  = window.innerWidth-6;
 var H = canvas.height = window.innerHeight-50;
+
+var button = document.getElementById('button');
+button.onclick = function() {
+    sendJSONXMLHTTPRequest(`/clear`, 'GET', {}, (jsonD) => {})
+}
 
 
 function sendJSONXMLHTTPRequest(url, method, objects, callback) {
@@ -61,18 +67,26 @@ function sendJSONXMLHTTPRequest(url, method, objects, callback) {
 
 
 world = {};
+var img = new Image();
+img.src = 'kirby.png';
 
-//XXX: TODO Make this prettier!
+//XXX: Make this prettier!
 function drawCircle(context,entity) {
     with(context) {
         beginPath();              
         lineWidth = 3;
         var x = entity["x"];
         var y = entity["y"];
+        var w = entity["w"];
+        var h = entity["h"]
+
+        drawImage(img, x, y, w, h);
+
         //moveTo(x,y);
-        fillStyle = entity["colour"];
-        strokeStyle = fillStyle;
-        arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);  
+        // fillStyle = entity["colour"];
+        // strokeStyle = fillStyle;
+        // arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);
+        // drawImage()
         stroke();                                
     }
 }
@@ -145,7 +159,7 @@ function addEntity(entity, data) {
     world[entity] = data;
     drawNextFrame(); // (but should we?)
     //XXX: Send a XHTML Request that updates the entity you just  modified!
-    sendJSONXMLHTTPRequest(`/entity/${entity}`, 'PUT', data, (jsonD) => {console.log('Added entity', jsonD)})
+    sendJSONXMLHTTPRequest(`/entity/${entity}`, 'PUT', data, (jsonD) => {})
 
 }
 
@@ -253,18 +267,19 @@ mouse = (function() {
 })();
 
 // Add the application specific mouse listeners!
-//XXX: TODO Make these prettier!
+//XXX: Make these prettier!
 mouse.mousedowners.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'blue'});
+    addEntityWithoutName({'x':x,'y':y,'w':100,'h':100});
 });
 
 mouse.mouseuppers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'red'});
+    var w = Math.random() * (100 - 30) + 30;
+    addEntityWithoutName({'x':x,'y':y,'w':w,'h':w});
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'green',
-                          'radius':10});
+    var w = Math.random() * (100 - 30) + 30;
+    addEntityWithoutName({'x':x,'y':y,'w':w,'h':w});
 });
 
 
