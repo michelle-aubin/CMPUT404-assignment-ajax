@@ -12,4 +12,8 @@ Contributors / Licensing
 
 Generally everything is LICENSE'D under the Apache 2 license by Abram Hindle and Michelle Aubin.
 
+Resources
+=========
+- https://github.com/abramhindle/CMPUT404-AJAX-Slides/tree/master/ObserverExample
+
 
